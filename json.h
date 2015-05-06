@@ -1,7 +1,7 @@
 /*
 								SuperEasyJSON
 					http://www.sourceforge.net/p/supereasyjson
-	
+
 	The MIT License (MIT)
 
 	Copyright (c) 2013 Jeff Weinstein (jeff.weinstein at gmail)
@@ -33,7 +33,7 @@
 	* Change postfix increment of iterators in Serialize to prefix, courtesy of Vasi B.
 	* More improvements to validity checking of non string/object/array types. Should
 		catch even more invalid usage types such as -1jE5, falsee, trueeeeeee
-		{"key" : potato} (that should be {"key" : "potato"}), etc. 
+		{"key" : potato} (that should be {"key" : "potato"}), etc.
 	* Switched to strtol and strtod from atof/atoi in Serialize for better error handling.
 	* Fix for GCC order of initialization warnings, courtsey of Vasi B.
 
@@ -41,10 +41,10 @@
 	----------
 	* Better error handling (and bug fixing) for invalid JSON. Previously, something such as:
 			{"def": j[{"a": 100}],"abc": 123}
-		would result in at best, a crash, and at worst, nothing when this was passed to 
+		would result in at best, a crash, and at worst, nothing when this was passed to
 		the Deserialize method. Note that the "j" is invalid in this example. This led
 		to further fixes for other invalid syntax:
-		- Use of multiple 'e', for example: 1ee4 is not valid 
+		- Use of multiple 'e', for example: 1ee4 is not valid
 		- Use of '.' when not preceded by a digit is invalid. For example: .1 is
 			incorrect, but 0.1 is fine.
 		- Using 'e' when not preceded by a digit. For example, e4 isn't valid but 1e4 is.
@@ -62,7 +62,7 @@
 		appropriate error message.
 	* Added versions of the Value::To* functions that take a default parameter.
 		In the event of an error (like calling Value::ToInt() when it's type is an Object),
-		the default value you specified will be returned. Courtesy of PeterSvP 
+		the default value you specified will be returned. Courtesy of PeterSvP
 	* Fixed type mismatch warning, courtesy of Per Rovegård
 	* Initialized some variables in the various Value constructors to defaults for
 		better support with full blast g++ warnings, courtesy of Mark Odell.
@@ -76,7 +76,7 @@
 
 
  	2/8/2014:
- 	--------- 
+ 	---------
  	MAJOR BUG FIXES, all courtesy of Per Rovegård, Ph.D.
  	* Feature request: HasKey and HasKeys added to Value for convenience and
  		to avoid having to make a temporary object.
@@ -91,13 +91,13 @@
  		The parameter it takes is now a Value, but existing code doesn't
  		need to be changed.
  	* Fixed bug with checking for proper opening/closing sequence for braces/brackets.
- 		Previously, this code: 
+ 		Previously, this code:
 			const char *json = "{\"arr\":[{}}]}";
 			auto val = json::Deserialize(json);
 		worked fine with no errors. That's a bug. I did a major overhaul so that
  		now improperly formatted pairs will now correctly result in an error.
  	* Made internal deserialize methods static
- 
+
  	1/30/2014:
  	----------
  	* Changed #pragma once to the standard #ifndef header guard style for
@@ -116,14 +116,14 @@
  		If you want more information on why this can't be done, please read
  		this topic for more details:
  		http://stackoverflow.com/questions/3518145/c-overloading-conversion-operator-for-custom-type-to-stdstring
- 
+
  	1/27/2014
  	----------
  	* Deserialize will now return a NULLVal Value instance if there was an
  		error instead of asserting. This way you can handle however you want to
  		invalid JSON being passed in. As a top level object must be either an
  		array or an object, a NULL value return indicates an invalid result.
- 
+
  	1/11/2014
  	---------
  	* Major bug fix: Strings containing []{} characters could cause
@@ -131,16 +131,16 @@
  		the class parsing a 300KB JSON file with all manner of bizarre
  		characters and permutations and it worked, so hopefully this should
  		be the end of "major bug" fixes.
- 
+
  	1/10/2014
  	---------
  	Bug fixes courtesy of Gerry Beauregard:
  	* Pretty big bug: was using wrong string paramter in ::Deserialize
- 		and furthermore it wasn't being trimmed. 
+ 		and furthermore it wasn't being trimmed.
  	* Object::HasKeys now casts the return value to avoid compiler warnings.
  	* Slight optimization to the Trim function
  	* Made asserts in ::Deserialize easier to read
- 
+
  	1/9/2014
  	--------
  	* Major bug fix: for JSON strings containing \" (as in, two characters,
@@ -151,7 +151,7 @@
  		object can be an array. I have therefore changed the Deserialize
  		method to return a json::Value rather than a json::Object. This
  		will NOT impact any existing code you have, as a json::Value will
- 		cast to a json::Object (if it is indeed an object). But for 
+ 		cast to a json::Object (if it is indeed an object). But for
  		correctness, you should be using json::Value = Deserialize...
  		The Value type can be checked if it's an array (or any other type),
  		and furthermore can even be accessed with the [] operator for
@@ -163,7 +163,7 @@
  	* Added method HasKeys to json::Object which will check if all the keys
  		specified are in the object, returning the index of the first key
  		not found or -1 if all found (hoppe).
- 
+
 	1/4/2014
 	--------
 	* Fixed bug where booleans were being parsed as doubles (Gerry Beauregard).
@@ -217,7 +217,7 @@
 		less than INT_MIN or greater than INT_MAX it will be stored as a double.
 		Note that as mentioned above, all numerical fields are set.
 	* Should work fine with scientific notation values now.
-	
+
 	12/28/2013
 	----------
 
@@ -263,7 +263,7 @@ namespace json
 		public:
 
 			// This is the type used to store key/value pairs. If you want to get an iterator for this class to iterate over its members,
-			// use this. 
+			// use this.
 			// For example: Object::ValueMap::iterator my_iterator;
 			typedef std::map<std::string, Value> ValueMap;
 
@@ -294,7 +294,7 @@ namespace json
 			const Value& operator [](const std::string& key) const;
 			Value& operator [](const char* key);
 			const Value& operator [](const char* key) const;
-		
+
 			ValueMap::const_iterator begin() const;
 			ValueMap::const_iterator end() const;
 			ValueMap::iterator begin();
@@ -326,7 +326,7 @@ namespace json
 		public:
 
 			// This is the type used to store values. If you want to get an iterator for this class to iterate over its members,
-			// use this. 
+			// use this.
 			// For example: Array::ValueVector::iterator my_array_iterator;
 			typedef std::vector<Value> ValueVector;
 
@@ -416,7 +416,7 @@ namespace json
 
 
 			// If this value represents an object or array, you can use the [] indexing operator
-			// just like you would with the native json::Array or json::Object classes. 
+			// just like you would with the native json::Array or json::Object classes.
 			// THROWS A std::runtime_error IF NOT AN ARRAY OR OBJECT.
 			Value& operator [](size_t idx);
 			const Value& operator [](size_t idx) const;
@@ -424,15 +424,15 @@ namespace json
 			const Value& operator [](const std::string& key) const;
 			Value& operator [](const char* key);
 			const Value& operator [](const char* key) const;
-		
+
 			// If this value represents an object, these methods let you check if a single key or an array of
-			// keys is contained within it. 
+			// keys is contained within it.
 			// THROWS A std::runtime_error IF NOT AN OBJECT.
 			bool 		HasKey(const std::string& key) const;
 			int 		HasKeys(const std::vector<std::string>& keys) const;
 			int 		HasKeys(const char* keys[], int key_count) const;
 
-		
+
 			// non-operator versions, **will throw a std::runtime_error if invalid with an appropriate error message**
 			int 				ToInt() const;
 			float 				ToFloat() const;
@@ -449,7 +449,7 @@ namespace json
 			bool				ToBool(bool def) const					{return (mValueType == BoolVal) ? mBoolVal : def;}
 			const std::string&	ToString(const std::string& def) const	{return (mValueType == StringVal) ? mStringVal : def;}
 
-			
+
 			// Please note that as per C++ rules, implicitly casting a Value to a std::string won't work.
 			// This is because it could use the int/float/double/bool operators as well. So to assign a
 			// Value to a std::string you can either do:
@@ -463,7 +463,7 @@ namespace json
 			operator bool() const;
 			operator std::string() const;
 			operator Object() const;
-			operator Array() const;			
+			operator Array() const;
 
 			// Returns 1 for anything not an Array/ObjectVal
 			size_t size() const;
@@ -475,9 +475,9 @@ namespace json
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// Converts a JSON Object or Array instance into a JSON string representing it. RETURNS EMPTY STRING ON ERROR. 
+	// Converts a JSON Object or Array instance into a JSON string representing it. RETURNS EMPTY STRING ON ERROR.
 	// As per JSON specification, a JSON data structure must be an array or an object. Thus, you must either pass in a
-	// json::Array, json::Object, or a json::Value that has an Array or Object as its underlying type. 
+	// json::Array, json::Object, or a json::Value that has an Array or Object as its underlying type.
 	std::string Serialize(const Value& obj);
 
 	// If there is an error, Value will be NULLVal. Pass in a valid JSON string (such as one returned from Serialize, or obtained
@@ -612,6 +612,39 @@ namespace json
 				return true;
 		}
 	}
+
+	class cConfig
+	{
+    public:
+        cConfig()
+        {
+            // Default double format shows full precision
+            setDoubleFormat();
+        }
+        /** Change format used for outputing doubles
+
+        @param[in] fmt  the new format to be used, defaults to "%f"
+
+        e.g.  json::theConfig.setDoubleFormat( "%.1f" );
+
+        Motivation:  sometimes using the full precision is
+        unneccessary and wastes bandwidth.
+
+        */
+        void setDoubleFormat( const std::string& fmt = "%f" )
+        {
+            myDoubleFormat = fmt;
+        }
+
+        const char* getDoubleFormat()
+        {
+            return myDoubleFormat.c_str();
+        }
+    private:
+        std::string myDoubleFormat;
+	};
+
+	extern cConfig theConfig;
 }
 
 #endif //__SUPER_EASY_JSON_H__

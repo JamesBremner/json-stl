@@ -21,6 +21,8 @@ using namespace json;
 namespace json
 {
 
+    cConfig theConfig;
+
 /** Case insensitive string comparison
 
   @param[in] a string
@@ -564,7 +566,11 @@ void Object::Clear()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-std::string SerializeArray(const Array& a);
+
+
+namespace json {
+
+    std::string SerializeArray(const Array& a);
 
 std::string SerializeValue(const Value& v)
 {
@@ -583,7 +589,9 @@ std::string SerializeValue(const Value& v)
         str = buff;
         break;
     case DoubleVal		:
-        snprintf(buff, BUFF_SZ, "%f", (double)v);
+        snprintf(buff, BUFF_SZ,
+                  theConfig.getDoubleFormat(),
+                   (double)v);
         str = buff;
         break;
     case BoolVal		:
@@ -606,6 +614,7 @@ std::string SerializeValue(const Value& v)
     return str;
 }
 
+
 std::string SerializeArray(const Array& a)
 {
     std::string str = "[";
@@ -624,6 +633,7 @@ std::string SerializeArray(const Array& a)
 
     str += "]";
     return str;
+}
 }
 
 std::string json::Serialize(const Value& v)
