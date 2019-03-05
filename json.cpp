@@ -23,32 +23,6 @@ namespace json
 
     cConfig theConfig;
 
-/** Case insensitive string comparison
-
-  @param[in] a string
-  @param[in] b string
-
-  @return 0 if they are ( case insesnitve ) identical, 1 otherwise
-
-  This should be in the standard libray
-  Finding the correct library under mingw is hard,
-   so here is a bit of code that works similarily
-
-*/
-
-int _stricmp( const char* a, const char* b )
-{
-    for( ; ; )
-    {
-        if( ! *a || ! *b )
-            return 0;
-        if( tolower( *a++ ) != tolower( *b++ ) )
-            return 1;
-    }
-    return 0;
-}
-
-
 enum StackDepthType
 {
     InObject,
